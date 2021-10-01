@@ -1,30 +1,38 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' @name plot96well
+#' @author Xiang LI <lixiang117423@@foxmail.com>
+#'
+#' @title Show 96-well Value of RT-qPCR.
+#' @description
+#' \code{plot96well} Show 96-well Value of RT-qPCR.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom data.table fread
+#' @importFrom stringr str_sub str_split
+#' @importFrom dplyr select filter mutate group_by ungroup
+#' @importFrom ggplot2 ggplot aes geom_line geom_tile geom_vline geom_hline geom_text
+#' @importFrom ggplot2 geom_segment annotate scale_x_continuous theme element_blank element_text
+#' @importFrom ggsci scale_fill_igv
+#'
+#' @examples
+#' filepath <- system.file("examples", "20210929lx_1.txt", package = "pac4xiang")
+#' show96res <- plot96well(data = filepath)
+#' @export
+#'
+#' @return Return a plot
+#'
+utils::globalVariables(c("Position", "Cq", "N", "P","fill","xend"))
 plot96well <- function(data) {
-  df <- fread(data, header = TRUE) %>%
+  df <- data.table::fread(data, header = TRUE) %>%
     dplyr::select(Position, Cq) %>%
     dplyr::mutate(
       P = stringr::str_sub(Position, 1, 1),
       N = as.numeric(stringr::str_sub(Position, 2, nchar(Position)))
     ) %>%
     dplyr::select(N, P, Cq) %>%
-    # dplyr::mutate(Cq = ifelse(Cq == '-',0, Cq)) %>%
-    dplyr::mutate(P = factor(P, levels = LETTERS[8:1]))
+    dplyr::mutate(P = factor(P, levels = LETTERS[8:1]),
+                  fill = as.character(N))
 
-  p <- ggplot(df, aes(x = N, y = P, fill = Cq)) +
+  p <- ggplot(df, aes(x = N, y = P, fill = fill)) +
     geom_tile() +
     geom_text(aes(label = Cq), color = "black", size = 5) +
     geom_vline(xintercept = c(4.5, 8.5), color = "black", size = 1) +
@@ -67,6 +75,7 @@ plot96well <- function(data) {
       size = 6
     ) +
     scale_x_continuous(expand = c(0, 0), breaks = seq(1, 12, 1)) +
+    scale_fill_igv() +
     theme(
       legend.position = "none",
       axis.title.x = element_blank(),

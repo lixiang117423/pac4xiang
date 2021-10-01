@@ -1,17 +1,25 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
+#' @name plotCisElements
+#' @author Xiang LI <lixiang117423@@foxmail.com>
+#'
+#' @title Plot Cis-element Location on Sequences.
+#' @description
+#' \code{plotCisElements} Plot Cis-element Location on Sequences.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom data.table fread
+#' @importFrom stringr str_sub str_split
+#' @importFrom dplyr select filter mutate group_by ungroup
+#' @importFrom ggplot2 ggplot geom_segment aes geom_rect
+#' @importFrom ggplot2 scale_x_continuous labs theme_classic theme element_blank
+#'
+#' @examples
+#' filepath <- system.file("examples", "plantCARE_output_PlantCARE_11359.tab", package = "pac4xiang")
+#' plot.res <- plotCisElements(data = filepath,length = 1500)
+#' @export
+#'
+#' @return Return a plot
+#'
+utils::globalVariables(c("V1","V2","V4","V5","temp","y","ymin","ymax"))
 
 plotCisElements <- function(data, length, Cis) {
   cis <- data.table::fread(data,

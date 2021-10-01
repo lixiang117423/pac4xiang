@@ -1,20 +1,33 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' @name plotGeneStructure
+#' @author Xiang LI <lixiang117423@@foxmail.com>
+#'
+#' @title Plot Gene Structure.
+#' @description
+#' \code{plotGeneStructure} Plot Gene Structure.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom data.table fread
+#' @importFrom stringr str_sub str_split
+#' @importFrom dplyr select filter mutate group_by ungroup
+#' @importFrom ggplot2 ggplot geom_segment aes geom_rect scale_x_continuous
+#' @importFrom ggplot2 labs theme_classic theme element_blank element_text
+#'
+#' @examples
+#' filepath <- system.file("examples", "gene.exon.info.gff", package = "pac4xiang")
+#' gene.stru <- plotGeneStructure(gff = pathfile, tree = "none")
+#' @export
+#'
+#' @return Return a plot.
+#'
+utils::globalVariables(c("start",
+                         "end",
+                         "length",
+                         "gene.id",
+                         "gene.id",
+                         "V4","V5","V7","isTip","label","y","V3",
+                         "y.min","y.max"))
 plotGeneStructure <- function(gff, tree = "None") {
-  df.gff <- fread(gff, header = FALSE) %>%
+  df.gff <- data.table::fread(gff, header = FALSE) %>%
     dplyr::mutate(gene.id = "")
 
   for (i in 1:nrow(df.gff)) {
@@ -43,7 +56,7 @@ plotGeneStructure <- function(gff, tree = "None") {
 
   # 构建顺序
   if (tree == "None") {
-    df.num <- data.table(gene.id = unique(df.gff$gene.id))
+    df.num <- data.frame(gene.id = unique(df.gff$gene.id))
     df.num$y <- 1:nrow(df.num)
   } else {
     my.tree <- ape::read.tree(file = tree) %>%

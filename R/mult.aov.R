@@ -1,21 +1,33 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' @name mult.aov
+#' @author Xiang LI <lixiang117423@@foxmail.com>
+#'
+#' @title Multiple Group Anova.
+#' @description
+#' \code{mult.aov} Multiple Group Anova.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom data.table fread
+#' @importFrom stringr str_sub str_split
+#' @importFrom dplyr select filter mutate group_by ungroup all_of
+#' @importFrom stats aov
+#' @importFrom multcomp mcp cld glht
+#'
+#'
+#' @examples
+#' filepath <- system.file("examples", "df.1.txt", package = "pac4xiang")
+#' aov.res <- mult.aov(data = filepath,
+#'                     group1 = "group1",group2 = "group2",
+#'                     value = "value", level = 0.95)
+#' @export
+#'
+#' @return Return a datafram
+#'
+utils::globalVariables(c("first.group", "second.group", 
+                         "anova.p.value", "signif",
+                         "group.temp","."))
 # 批量Anova
 mult.aov <- function(data, group1, group2, value, level) {
-  data %>%
+  data.table::fread(data = data) %>%
     dplyr::rename(
       first.group = all_of(group1),
       second.group = all_of(group2),

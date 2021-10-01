@@ -1,19 +1,21 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' @name getAlignResults
+#' @author Xiang LI <lixiang117423@@foxmail.com>
+#'
+#' @title Get Alignment Result from Clustalw.
+#' @description
+#' \code{getAlignResults} Get Alignment Result from Clustalw.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom data.table fread
+#'
+#' @examples
+#' filepath <- system.file("examples", "pep.confirmed.aln", package = "pac4xiang")
+#' aln.res <- calStandCurve (aln = filepath)
+#' @export
+#'
+#' @return Return a datafram
 # 合并clustalw的结果
+utils::globalVariables(c("CLUSTAL"))
 getAlignResults <- function(aln) {
 
   df <- data.table::fread(aln, fill = TRUE) %>%

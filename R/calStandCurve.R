@@ -1,22 +1,37 @@
-# Hello, world!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' @name calStandCurve
+#' @author Xiang LI <lixiang117423@@foxmail.com>
+#'
+#' @title Calculate Standard Curve for RT-qPCR.
+#' @description
+#' \code{calStandCurve} Calculate Standard Curve for RT-qPCR.
+#'
+#' @importFrom magrittr %>%
+#' @importFrom data.table fread
+#' @importFrom stringr str_sub str_split
+#' @importFrom dplyr select filter mutate group_by ungroup
+#' @importFrom ggplot2 ggplot aes geom_smooth geom_point facet_wrap labs
+#' @importFrom ggplot2 scale_y_continuous scale_x_continuous theme_bw theme ggsave
+#' @importFrom ggpmisc stat_poly_eq
+#' @importFrom stats lm
+#'
+#' @examples
+#' filepath <- system.file("examples", "20210928lx_1.txt", package = "pac4xiang")
+#' stand.curve <- calStandCurve (data = filepath, genes = c("A","B","C","D"),
+#'                               dilution = 4,start = 2, end = 7,rep = 4,
+#'                               drop.NA = FALSE, fill.NA = "mean",
+#'                               save.fig = TRUE, fig.type = 'pdf')
+#' @export
+#'
+#' @return Return a datafram
+utils::globalVariables(c("Position","Cq","N","P","genes","rep","dilution",
+                         "group","mean","sd","max","min","Relative.Conc",
+                         "relative.conc","temp.conc","gene","group.2","loc",
+                         "relativa.conc","..eq.label..","..rr.label..",
+                         "..p.value.label.."))
 calStandCurve <- function(data, genes, dilution = 4, start = 2, end = 7,
                           rep = 4, drop.NA = FALSE, fill.NA = "mean",
                           save.fig = TRUE, fig.type = 'pdf') {
-  df <- fread(data, header = TRUE) %>%
+  df <- data.table::fread(data, header = TRUE) %>%
     dplyr::select(Position, Cq) %>%
     dplyr::mutate(
       P = stringr::str_sub(Position, 1, 1),
@@ -119,7 +134,8 @@ calStandCurve <- function(data, genes, dilution = 4, start = 2, end = 7,
         mean = mean(Cq), sd = sd(Cq),
         max = max(Cq), min = min(Cq)
       ) %>%
-      dplyr::ungroup()
+      dplyr::ungroup() %>%
+      dplyr::filter(loc >= start & loc <= end)
   }
 
   # 构建模型
