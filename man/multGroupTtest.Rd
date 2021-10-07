@@ -11,9 +11,11 @@ Return a datafram
 }
 \examples{
 filepath <- system.file("examples", "df.1.txt", package = "pac4xiang")
-t.res <- multGroupTtest(data = filepath,
-                        group1 = "group1",group2 = "group2",
-                        CK = "a",value = "value",level=0.95)
+t.res <- multGroupTtest(
+  data = filepath,
+  group1 = "group1", group2 = "group2",
+  CK = "a", value = "value", level = 0.95
+)
 }
 \author{
 Xiang LI <lixiang117423@foxmail.com>
