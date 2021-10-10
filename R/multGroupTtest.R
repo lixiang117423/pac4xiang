@@ -60,9 +60,9 @@ multGroupTtest <- function(data, group1, group2, CK, value, level) {
     for (j in unique(df.sub.2$second.group)) {
       df.sub.3 <- df.sub.2 %>% dplyr::filter(second.group == j)
 
-      df.sub.ck = df.sub.ck %>% dplyr::select(1:13)
+      df.sub.ck.2 = df.sub.ck %>% dplyr::select(1:(ncol(df.sub.ck)-2))
 
-      df.sub.4 <- rbind(df.sub.ck, df.sub.3)
+      df.sub.4 <- rbind(df.sub.ck.2, df.sub.3)
 
       if (dim(df.sub.4)[1] == 0) {
         next
