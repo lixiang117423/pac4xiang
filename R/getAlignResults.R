@@ -44,6 +44,10 @@ getAlignResults <- function(aln) {
     res <- rbind(res, seq)
   }
 
+  res <- res[3:nrow(res),]
+
+  write.table(res, file = 'YourAlignResults.txt', row.names = FALSE, quote = FALSE)
+
   return(res)
 
 }
