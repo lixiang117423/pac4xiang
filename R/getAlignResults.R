@@ -46,7 +46,7 @@ getAlignResults <- function(aln) {
 
   res <- res[3:nrow(res),]
 
-  write.table(res, file = 'YourAlignResults.txt', row.names = FALSE, quote = FALSE)
+  write.table(res, file = 'YourAlignResults.fasta', row.names = FALSE, quote = FALSE)
 
   return(res)
 
