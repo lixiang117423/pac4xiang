@@ -24,11 +24,21 @@ utils::globalVariables(c("V1","V2","V4","V5","temp","y","ymin","ymax"))
 plotCisElements <- function(data, length, Cis) {
   cis <- data.table::fread(data,
     header = FALSE
-  ) %>%
-    dplyr::mutate(xend = V4 + V5) %>%
+  )
+
+  if (Cis == "") {
+    cis <- cis
+  } else {
+    cis <- cis %>%
+      dplyr::filter(V2 %in% Cis)
+  }
+
+  cis %>%
+    dplyr::mutate(xend = V4 + V5,
+                  length = length) %>%
     dplyr::filter(V2 != '') %>%
     dplyr::mutate(temp = stringr::str_sub(V2, 1, 7)) %>%
-    dplyr::filter(temp != 'Unnamed')
+    dplyr::filter(temp != 'Unnamed') -> cis
 
   df.num <- data.frame(V1 = unique(cis$V1))
   df.num$y <- 1:nrow(df.num)
@@ -39,13 +49,6 @@ plotCisElements <- function(data, length, Cis) {
       V1 = factor(V1, levels = unique(V1)),
       ymin = y - 0.4, ymax = y + 0.4
     )
-
-  if (Cis == "") {
-    cis <- cis
-  } else {
-    cis <- cis %>%
-      dplyr::filter(V2 %in% Cis)
-  }
 
   cis %>%
     ggplot() +

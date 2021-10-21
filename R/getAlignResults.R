@@ -44,9 +44,9 @@ getAlignResults <- function(aln) {
     res <- rbind(res, seq)
   }
 
-  res <- res[3:nrow(res),]
+  res <- res[3:nrow(res),] %>% as.data.frame()
 
-  write.table(res, file = 'YourAlignResults.fasta', row.names = FALSE, quote = FALSE)
+  fwrite(res, file = 'YourAlignResults.fasta', row.names = FALSE, col.names = FALSE, quote = FALSE)
 
   return(res)
 
