@@ -2,6 +2,7 @@
 
 export(calRTqPCR)
 export(calStandCurve)
+export(fasta2df)
 export(getAlignResults)
 export(mult.aov)
 export(multGroupTtest)
