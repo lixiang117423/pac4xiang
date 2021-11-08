@@ -17,7 +17,7 @@ utils::globalVariables(c("df.seq","seq.num","df.temp","start","end","seq.info","
 
 fasta2df <- function(fasta) {
 
-  df.seq <- fread(fasta, header = FALSE) %>% na.omit()
+  df.seq <- fread(fasta, header = FALSE, sep = "\n") %>% na.omit()
 
   seq.num <- c()
 

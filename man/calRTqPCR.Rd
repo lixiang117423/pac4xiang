@@ -18,8 +18,6 @@ stand.curve <- calStandCurve (data = filepath.1, genes = c("A","B","C","D"),
                               save.fig = TRUE, fig.type = 'pdf')
 exp <- calRTqPCR(data = filepath.2,
                 StandCurve = stand.curve,
-                genes = c("A","B","C","D"),
-                treatment = c("T1", "T2", "T3"),
                 drop.NA = FALSE,
                 fill.NA = "mean")
 }
