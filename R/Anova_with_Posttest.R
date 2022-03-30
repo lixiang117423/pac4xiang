@@ -14,7 +14,7 @@
 #'
 #' @return Return a datafram
 utils::globalVariables(c("data", "value", "group", "method", "fit", "res"))
-Anova_with_Tukey <- function(data, value, group, method, level = 0.95) {
+Anova_with_Posttest <- function(data, value, group, method, level = 0.95) {
   data <- data %>%
     dplyr::rename(v = all_of(value), g = all_of(group)) %>%
     dplyr::mutate(g = as.factor(g))
@@ -38,5 +38,14 @@ Anova_with_Tukey <- function(data, value, group, method, level = 0.95) {
       dplyr::select(1, 4, 3)
     colnames(res) <- c("group", "anova.pvalue", "Duncan.signif")
   }
+
+  res <- res %>%
+    dplyr::mutate(anova.signif = ifelse(anova.pvalue < 0.05 & anova.pvalue > 0.01, "*",
+      ifelse(anova.pvalue < 0.01 & anova.pvalue > 0.001, "**",
+        ifelse(anova.pvalue < 0.001, "***", "NS")
+      )
+    )) %>%
+    dplyr::select(1, 2, 4, 3)
+
   return(res)
 }
