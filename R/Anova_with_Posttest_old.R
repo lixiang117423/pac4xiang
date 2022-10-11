@@ -1,11 +1,19 @@
 #' @name Anova_with_Posttest
 #' @author Xiang LI <lixiang117423@@foxmail.com>
 #'
-#' @title Anova_with_Posttest.
+#' @title Anova with Post Test.
+#' @description
+#' \code{Anova_with_Posttest} Anova with Post Test.
+#'
+#' @importFrom magrittr %>%
+#'
+#' @param
+#' \code{method} Tukey or Duncan
 #'
 #' @export
 #'
-# anova with post test
+#' @return Return a datafram
+utils::globalVariables(c("data", "value", "group", "method", "fit", "res"))
 Anova_with_Posttest <- function(data, value, group, method, level = 0.95) {
   data <- data %>%
     dplyr::rename(v = all_of(value), g = all_of(group)) %>%
