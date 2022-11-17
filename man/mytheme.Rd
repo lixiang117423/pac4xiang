@@ -4,7 +4,7 @@
 \alias{mytheme}
 \title{My ggplot theme.}
 \usage{
-mytheme(...)
+mytheme(base_size = 14, base_family = "helvetica", ...)
 }
 \description{
 My ggplot theme.

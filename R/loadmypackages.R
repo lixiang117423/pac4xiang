@@ -33,4 +33,5 @@ loadmypackages = function(...){
   suppressPackageStartupMessages(library(enrichplot))
   suppressPackageStartupMessages(library(qPCRtools))
   suppressPackageStartupMessages(library(janitor))
+  suppressPackageStartupMessages(library(viridis))
 }

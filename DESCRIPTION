@@ -1,13 +1,13 @@
 Package: pac4xiang
 Type: Package
 Title: Package for XiangLi
-Version: 0.1.1
+Version: 1.2.88
 Author: Xiang LI
 Maintainer: Xiang LI <lixiang117423@foxmail.com>
 Description: Some functions designed for XiangLi.
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Imports: tidyverse,dplyr,XML,magrittr,ggplot2,stringr,ggtree,ape,aplot,ggpmisc,data.table,ggsci,multcomp,broom
 Depends: R (>= 3.5.0)
